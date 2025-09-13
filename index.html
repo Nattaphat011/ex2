@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>กิจกรรมสะท้อนอารมณ์ — เติมรอยยิ้ม</title>
+<style>
+  body {
+    font-family: "Prompt", sans-serif;
+    background: linear-gradient(135deg, #ffe6e6, #e6f0ff);
+    margin: 0; padding: 20px;
+    color: #333;
+  }
+  h1 {
+    text-align: center;
+    color: #ff6699;
+    margin-bottom: 20px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin: 20px 0;
+  }
+  h2 {
+    margin-top: 0;
+    color: #4d79ff;
+  }
+  .question {
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  textarea {
+    width: 100%;
+    height: 70px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    resize: none;
+    font-family: inherit;
+  }
+  button {
+    background: #7fb2ff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+  button:hover {
+    background: #4d79ff;
+  }
+  .comment {
+    margin-top: 10px;
+    background: #f0f8ff;
+    border-left: 5px solid #7fb2ff;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.95em;
+    display: none;
+  }
+</style>
+</head>
+<body>
+  <h1>🌈 กิจกรรมสะท้อนอารมณ์ เติมรอยยิ้ม</h1>
+
+  <div class="card">
+    <h2>💖 เติมรอยยิ้มในใจ</h2>
+    <p class="question">เหตุการณ์ใดทำให้คุณอารมณ์ดีในวันนี้?</p>
+    <textarea id="good"></textarea>
+    <button onclick="showComment('good','goodComment')">ส่งคำตอบ</button>
+    <div id="goodComment" class="comment">
+      ✨ ไอเดียเพิ่มเติม: เก็บ "โมเมนต์เล็ก ๆ" เช่น เสียงหัวเราะ เพลงที่ชอบ หรือคำชมจากใครสักคนไว้ในใจ จะช่วยเติมพลังได้เสมอ
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🌧️ เจอเรื่องไม่สบายใจ</h2>
+    <p class="question">เหตุการณ์ใดทำให้คุณรู้สึกไม่ดีในวันนี้?</p>
+    <textarea id="bad"></textarea>
+    <button onclick="showComment('bad','badComment')">ส่งคำตอบ</button>
+    <div id="badComment" class="comment">
+      🌱 ไอเดียเพิ่มเติม: เขียนความรู้สึกลงกระดาษหรือวาดรูปแทน แล้วฉีกทิ้งหรือเก็บไว้ ก็ช่วยปลดปล่อยอารมณ์ลบออกไปได้
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🛠️ วิธีที่ฉันดูแลใจตัวเอง</h2>
+    <p class="question">เมื่อมีอารมณ์ไม่ดี คุณมักจัดการอย่างไร?</p>
+    <textarea id="how"></textarea>
+    <button onclick="showComment('how','howComment')">ส่งคำตอบ</button>
+    <div id="howComment" class="comment">
+      💡 ไอเดียเพิ่มเติม: ลองเดินเล่น ฟังเพลงโปรด หรือหายใจลึก ๆ 3 ครั้ง ก็ช่วยปรับอารมณ์ได้อย่างง่าย ๆ
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🌟 เปลี่ยนมุม เปลี่ยนใจ</h2>
+    <p class="question">สิ่งใดที่ช่วยให้คุณผ่อนคลายหรือกลับมาอารมณ์ดีขึ้น?</p>
+    <textarea id="relax"></textarea>
+    <button onclick="showComment('relax','relaxComment')">ส่งคำตอบ</button>
+    <div id="relaxComment" class="comment">
+      🌸 ไอเดียเพิ่มเติม: ใช้มุมมองเชิงบวก เช่น มองหาบทเรียนจากเรื่องร้าย หรือเปลี่ยนบรรยากาศรอบตัวด้วยกลิ่นหอม/แสงไฟอุ่น ๆ
+    </div>
+  </div>
+
+<script>
+  function showComment(inputId, commentId) {
+    let input = document.getElementById(inputId).value.trim();
+    let comment = document.getElementById(commentId);
+    if(input !== "") {
+      comment.style.display = "block";
+    } else {
+      alert("กรุณาพิมพ์คำตอบก่อนนะคะ 😊");
+    }
+  }
+</script>
+</body>
+</html>
+
