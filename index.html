@@ -4,6 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>กิจกรรมสะท้อนอารมณ์ — เติมรอยยิ้ม</title>
+
+<!-- ไลบรารี confetti -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 <style>
   body {
     font-family: "Prompt", sans-serif;
@@ -11,26 +15,44 @@
     margin: 0; padding: 20px;
     color: #333;
   }
+
   h1 {
     text-align: center;
     color: #ff6699;
-    margin-bottom: 20px;
+    margin: 20px 0;
   }
+
+  /* โลโก้ลอย */
+  .floating-logo {
+    display: block;
+    margin: 0 auto 20px auto;
+    width: 140px;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
   .card {
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     padding: 20px;
-    margin: 20px 0;
+    margin: 20px auto;
+    max-width: 600px;
   }
+
   h2 {
     margin-top: 0;
     color: #4d79ff;
   }
+
   .question {
     font-weight: bold;
     margin-bottom: 8px;
   }
+
   textarea {
     width: 100%;
     height: 70px;
@@ -41,18 +63,22 @@
     resize: none;
     font-family: inherit;
   }
+
   button {
-    background: #7fb2ff;
+    background: linear-gradient(135deg, #7fb2ff, #4d79ff);
     border: none;
     padding: 8px 15px;
-    border-radius: 8px;
+    border-radius: 20px;
     color: white;
     cursor: pointer;
     font-size: 0.9em;
+    transition: transform 0.2s, box-shadow 0.2s;
   }
   button:hover {
-    background: #4d79ff;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   }
+
   .comment {
     margin-top: 10px;
     background: #f0f8ff;
@@ -62,9 +88,90 @@
     font-size: 0.95em;
     display: none;
   }
+
+  /* รองรับมือถือ */
+@media (max-width: 480px) {
+  body { padding: 10px; font-size: 0.9rem; }
+  h1 { font-size: 1.5rem; }
+  .card { padding: 15px; max-width: 95%; }
+  textarea { font-size: 0.9rem; }
+  button { font-size: 0.85rem; }
+  img.goal-img { max-width: 90%; }
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 1.8rem; }
+  .card { max-width: 90%; }
+  img.goal-img { max-width: 400px; }
+}
+
+
+      img.goal-img {
+  display: block;
+  margin: 0 auto 20px;
+  width: 100%;          /* ให้กินความกว้างเต็ม container */
+  max-width: 350px;     /* แต่ไม่เกิน 500px บนจอใหญ่ */
+  height: auto;         /* คงอัตราส่วน */
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  object-fit: cover;
+  cursor: zoom-in; /* เปลี่ยนเคอร์เซอร์เป็นสัญลักษณ์ขยาย */
+}
+
+/* สไตล์สำหรับ modal รูปภาพ */
+img.goal-img {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  object-fit: cover;
+}
+.img-modal-content {
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.img-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.img-close:hover {
+  color: #ff6b6b;
+}
+
+em {
+  display: block;
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+  color: #555;
+}
 </style>
 </head>
 <body>
+    <img src="images/หัวข้อ1.jpg" 
+     alt="รูปภาพ" 
+     class="goal-img"
+     id="myImage">
+<!-- หมายเหตุสามารถแตะรูปภาพเพื่อขยายภาพได้ -->
+ <em> (สามารถแตะรูปภาพเพื่อขยายภาพได้) </em>
+
+
+     <div id="imgModal" class="img-modal">
+  <span class="img-close">&times;</span>
+  <img class="img-modal-content" id="imgModalContent">
+  <div id="imgCaption"></div>
+</div>
+
+  <!-- โลโก้ -->
+  <img src="https://www.web.bcnsurat.ac.th/wp-content/uploads/2024/08/logo-%E0%B8%A7%E0%B8%9E%E0%B8%9A.png"
+       alt="โลโก้วิทยาลัย"
+       class="floating-img">
+
   <h1>🌈 กิจกรรมสะท้อนอารมณ์ เติมรอยยิ้ม</h1>
 
   <div class="card">
@@ -108,6 +215,7 @@
   </div>
 
 <script>
+  // แสดงคำแนะนำเมื่อกรอกข้อความ
   function showComment(inputId, commentId) {
     let input = document.getElementById(inputId).value.trim();
     let comment = document.getElementById(commentId);
@@ -117,7 +225,38 @@
       alert("กรุณาพิมพ์คำตอบก่อนนะคะ 😊");
     }
   }
+
+  // 🎉 ลิบบิ้นตอนเปิดหน้า
+  window.addEventListener('load', () => {
+    confetti({
+      particleCount: 120,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  });
+
+    const modal = document.getElementById('imgModal');
+  const img = document.getElementById('myImage');
+  const modalImg = document.getElementById('imgModalContent');
+  const caption = document.getElementById('imgCaption');
+  const closeBtn = document.getElementsByClassName('img-close')[0];
+
+  img.onclick = function() {
+    modal.style.display = "block";
+    modalImg.src = this.src;
+    caption.innerHTML = this.alt;
+  }
+
+  closeBtn.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  // ปิด modal เมื่อคลิกที่พื้นหลัง
+  modal.onclick = function(e) {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  }
 </script>
 </body>
 </html>
-
