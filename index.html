@@ -260,11 +260,6 @@ em {
 
 <script>
 
-      fetch("https://script.google.com/macros/s/AKfycbws1Y9Fj-aT_XK7N-zMy4nULjdEiZjVDftwJmwIQ211AW9D8v_KEOzt3Yg2p9IBrXka/exec", {
-        method: "POST",
-        body: JSON.stringify(data)
-      })
-
   // แสดงคำแนะนำเมื่อกรอกข้อความ
   function showComment(inputId, commentId) {
     let input = document.getElementById(inputId).value.trim();
@@ -327,7 +322,7 @@ em {
       timestamp: new Date().toLocaleString("th-TH")
     };
 
-    fetch("YOUR_GAS_WEBAPP_URL", {
+    fetch("https://script.google.com/macros/s/AKfycbws1Y9Fj-aT_XK7N-zMy4nULjdEiZjVDftwJmwIQ211AW9D8v_KEOzt3Yg2p9IBrXka/exec", {
       method: "POST",
       body: JSON.stringify(data)
     })
